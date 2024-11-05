@@ -1,0 +1,18 @@
+# Ignore build outputs and other unnecessary files
+bin/
+obj/
+*.pdb
+*.exe
+*.dll
+*.cache
+*.json
+*.editorconfig
+*.props
+*.targets
+*.sln.docstates
+*.suo
+*.user
+*.userosscache
+*.ide/
+project.nuget.cache
+project.assets.json
