@@ -1,4 +1,4 @@
-namespace ShoeStore.Models;
+namespace NikeStyle.Models;
 
 public class ErrorViewModel
 {

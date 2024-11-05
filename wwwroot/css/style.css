@@ -1,0 +1,33 @@
+.banner-card {
+    position: relative;
+    border: none; /* Remove border if needed */
+}
+
+.banner-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    filter: brightness(80%); /* Darken the image for text contrast */
+}
+
+.banner-overlay {
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    padding: 20px;
+    transition: background 0.3s ease-in-out;
+}
+
+.banner-card:hover .banner-overlay {
+    background: rgba(0, 0, 0, 0.6); /* Darken on hover */
+}
+
+.card-title, .card-text {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.btn-light {
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 20px; /* Rounded button */
+    margin-top: 10px;
+}

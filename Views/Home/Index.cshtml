@@ -1,8 +1,73 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@* @using NikeStyle.Models; *@
+@{
+    ViewData["Title"] = "Home - NikeStyle";
+    var products = ViewBag.Products as List<NikeStyle.Models.Product>;
+    var banners = ViewBag.Banners as List<NikeStyle.Models.Banner>;
 }
+<DOCTYPE html>
+    <html lang="en">
+        <head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        /* Full-width and full-height hero section */
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+        
+        .full-width-image {
+            width: 100vw; /* Full viewport width */
+            height: 100vh; /* Full viewport height */
+            background-image: url('/images/member-days.jpg'); /* Replace with actual image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin: 0;
+        }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+        .full-width-content {
+            background: rgba(0, 0, 0, 0.6); /* Overlay for text contrast */
+            padding: 20px;
+        }
+    </style>
+        </head>
+        <body>
+            <section class="hero text-center bg-dark text-white py-5">
+                <div class="container">
+                    <img src="/images/sale-30.jpg" alt="SALE OFF 30%" class="img-fluid">
+                    <h1 class="display-4">SALE OFF 30%</h1>
+                    <p class="lead">Step into unbeatable deals with Nike’s new arrival shoes! </p>
+                </div>
+            </section>
+            <section class="new-arrivals py-5">
+                <div class="container">
+                    <h2 class = "text-center mb-4">New Arrivals</h2>
+                    <div class="row">
+                        @foreach (var banner in banners)
+                        {
+                            <div class="col-md-6 mb-4">
+                                <div class="card banner-card">
+                                    <img src="@banner.ImageUrl" alt="@banner.BannerName" class="card-img-top banner-image">
+                                    <div class="card-img-overlay text-center d-flex flex-column justify-content-end banner-overlay">
+                                        <h5 class="card-title text-white">@banner.BannerName</h5>
+                                        <p class="card-text text-white">@banner.Description</p>
+                                        <a href="/shop" class="btn btn-light">Shop</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </section>
+        </body>
+    </html>
+</DOCTYPE>

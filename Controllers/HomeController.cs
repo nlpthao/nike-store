@@ -1,31 +1,30 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using ShoeStore.Models;
+using NikeStyle.Models;
+using System.Collections.Generic;
 
-namespace ShoeStore.Controllers;
-
-public class HomeController : Controller
+namespace NikeStyle.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public class HomeController : Controller
     {
-        _logger = logger;
-    }
+        public IActionResult Index()
+        {
+            var products = new List<Product>
+            {
+                new Product {Id=1, Name = "Retro Runners", ImageUrl = "/images/retro-runner.jpg",Description = "Just In", Category = "Shoes", Price = 99.99M},
+                new Product {Id=2,Name = "Sport Meets Style", ImageUrl = "/images/sport-meet-style.jpg", Description = "Give Sport", Category = "Clothing", Price = 79.99M}
+            };
+            var banners = new List<Banner>
+            {
+                new Banner {BannerId=1, BannerName = "Retro Runners", ImageUrl = "/images/retro-runner.png", Description="Just in"},
+                new Banner {BannerId=2,BannerName = "Sport Meets Style", ImageUrl = "/images/sport-meet-style.jpg",Description="Give Sport"},
+                new Banner {BannerId=3,BannerName = "Cold Weather Running", ImageUrl = "/images/cold-weather-running.jpg",Description="Run in the Rain"},
+                new Banner {BannerId=4,BannerName = "Women Nike Fleece", ImageUrl = "/images/women-nike-fleece.png",Description="Comfortable everywhere"}
+            };
 
-    public IActionResult Index()
-    {
-        return View();
-    }
+            ViewBag.Products = products;
+            ViewBag.Banners = banners;
+            return View();
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }
