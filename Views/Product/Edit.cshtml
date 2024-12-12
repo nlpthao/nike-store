@@ -1,0 +1,74 @@
+@model NikeStyle.Models.Product
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<h2>Edit Product</h2>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="ProductId" />
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Image Source</label>
+        <div>
+            <input type="radio" id="urlOption" name="ImageSourceOption" value="url" checked />
+            <label for="urlOption">Use Image URL</label>
+
+            <input type="radio" id="fileOption" name="ImageSourceOption" value="file" />
+            <label for="fileOption">Upload New File</label>
+        </div>
+    </div>
+
+    <div class="form-group" id="urlInputGroup">
+        <label asp-for="ImageUrl">Image URL</label>
+        <input asp-for="ImageUrl" class="form-control" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+
+    <div class="form-group" id="fileInputGroup" style="display: none;">
+        <label for="ImageFile">Upload Image File</label>
+        <input type="file" id="ImageFile" name="ImageFile" class="form-control" accept="image/*" />
+        <span class="text-danger" asp-validation-for="ImageFile"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryID">Category</label>
+        <select asp-for="CategoryID" asp-items="ViewBag.Categories" class="form-control"></select>
+        <span asp-validation-for="CategoryID" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <script>
+        document.getElementById("urlOption").addEventListener("change", function () {
+            document.getElementById("urlInputGroup").style.display = "block";
+            document.getElementById("fileInputGroup").style.display = "none";
+        });
+
+        document.getElementById("fileOption").addEventListener("change", function () {
+            document.getElementById("urlInputGroup").style.display = "none";
+            document.getElementById("fileInputGroup").style.display = "block";
+        });
+    </script>
+}

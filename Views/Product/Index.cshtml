@@ -1,0 +1,87 @@
+@model ProductListViewModel
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Sidebar for Category filter -->
+        <div class="col-md-3">
+            <h4>Filter by Category</h4>
+            <ul class="list-group">
+                <li class="list-group-item @(Model.SelectedCategoryId == null ? "active" : "")">
+                    <a asp-action="Index" asp-route-categoryId="" class="text-dark">All Products</a>
+                </li>
+                @foreach (var category in Model.Categories.Where(c => c.ParentCategoryID == null))
+                {
+                    <li class="list-group-item @(Model.SelectedCategoryId == category.CategoryID ? "active" : "")">
+                        <a asp-action="Index" asp-route-categoryId="@category.CategoryID" class="text-dark">@category.Name</a>
+
+                        <!-- Display subcategories as a nested list (optional) -->
+                        @if (category.SubCategories != null && category.SubCategories.Any())
+                        {
+                            <ul class="list-group ml-3">
+                                @foreach (var subCategory in category.SubCategories)
+                                {
+                                    <li class="list-group-item @(Model.SelectedCategoryId == subCategory.CategoryID ? "active" : "")">
+                                        <a asp-action="Index" asp-route-categoryId="@subCategory.CategoryID" class="text-dark">
+                                            @subCategory.Name
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <!-- Main Content for Product List -->
+        <div class="col-md-9">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>Product List</h1>
+                <a asp-action="Add" class="btn btn-success">Add Product</a>
+            </div>
+            <div class="row">
+                @if (Model.Products != null && Model.Products.Any())
+                {
+                    @foreach (var product in Model.Products)
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name" />
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">@product.Name</h5>
+                                    <p class="card-text text-muted">$@product.Price</p>
+                                    <p class="card-text">@product.Description</p>
+                                    <div class="mt-auto">
+                                        <a asp-action="Edit" asp-route-id="@product.ProductId" class="btn btn-primary btn-sm">Edit</a>
+                                        <form asp-action="Delete" asp-route-id="@product.ProductId" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                        <form asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@product.ProductId" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-success btn-sm">Add to Cart</button>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-center">No products available in this category.</p>
+                }
+            </div>
+
+            <!-- Pagination Controls -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-categoryId="@Model.SelectedCategoryId">@i</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

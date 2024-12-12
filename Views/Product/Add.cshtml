@@ -1,0 +1,75 @@
+@model NikeStyle.Models.Product
+
+@{
+    ViewData["Title"] = "Add Product";
+}
+<h2>Add Product</h2>
+
+<form asp-action="Add" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control"/>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price"></label>
+        <input asp-for="Price" type="number" step="0.01" class="form-control"/>
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <!-- Category Selection Dropdown with Subcategories -->
+    <div class="form-group">
+        <label asp-for="CategoryID">Category</label>
+        <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.Categories"></select>
+        <span asp-validation-for="CategoryID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Image Url</label>
+        <div>
+            <input type="radio" id="urlOption" name="ImageSourceOption" value="url" checked/>
+            <label for="urlOption">Enter Url</label>
+            <input type="radio" id="fileOption" name="ImageSourceOption" value="file"/>
+            <label for="fileOption">Upload File</label>
+        </div>
+    </div>
+
+    <div class="form-group" id="urlInputGroup">
+        <label asp-for="ImageUrl">Image URL</label>
+        <input asp-for="ImageUrl" class="form-control"/>
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+
+    <div class="form-group" id="fileInputGroup" style="display: none;">
+        <label for="ImageFile">Upload Image File</label>
+        <input type="file" id="ImageFile" name="ImageFile" class="form-control" accept="image/*" />
+        <span class="text-danger" asp-validation-for="ImageFile"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-success">Add Product</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        // JavaScript to toggle between URL input and File upload based on selected option
+        document.getElementById("urlOption").addEventListener("change", function() {
+            document.getElementById("urlInputGroup").style.display = "block";
+            document.getElementById("fileInputGroup").style.display = "none";
+        });
+
+        document.getElementById("fileOption").addEventListener("change", function() {
+            document.getElementById("urlInputGroup").style.display = "none";
+            document.getElementById("fileInputGroup").style.display = "block";
+        });
+    </script>
+}

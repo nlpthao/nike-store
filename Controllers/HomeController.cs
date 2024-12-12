@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NikeStyle.Data;
 using NikeStyle.Models;
 using System.Collections.Generic;
 
@@ -6,13 +9,18 @@ namespace NikeStyle.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ProductContext _context;
+        public HomeController(UserManager<IdentityUser> userManager, ProductContext context)
         {
-            var products = new List<Product>
-            {
-                new Product {Id=1, Name = "Retro Runners", ImageUrl = "/images/retro-runner.jpg",Description = "Just In", Category = "Shoes", Price = 99.99M},
-                new Product {Id=2,Name = "Sport Meets Style", ImageUrl = "/images/sport-meet-style.jpg", Description = "Give Sport", Category = "Clothing", Price = 79.99M}
-            };
+            _userManager = userManager;
+            _context = context;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var products = await _context.Products.ToListAsync();
+            var categories = await _context.Categories.ToListAsync();
+            var tags = await _context.Tags.ToListAsync();
             var banners = new List<Banner>
             {
                 new Banner {BannerId=1, BannerName = "Retro Runners", ImageUrl = "/images/retro-runner.png", Description="Just in"},
@@ -21,8 +29,19 @@ namespace NikeStyle.Controllers
                 new Banner {BannerId=4,BannerName = "Women Nike Fleece", ImageUrl = "/images/women-nike-fleece.png",Description="Comfortable everywhere"}
             };
 
-            ViewBag.Products = products;
-            ViewBag.Banners = banners;
+            ViewBag.Products = products ?? new List<Product>();
+            ViewBag.Banners = banners ?? new List<Banner>();
+            ViewBag.Categories = categories ?? new List<Category>();
+            ViewBag.Tags = tags ?? new  List<Tag>();
+            
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                // if (user != null)
+                // {
+                //     ViewData["FirstName"] = user.FirstName;
+                // }
+            }
             return View();
 
         }

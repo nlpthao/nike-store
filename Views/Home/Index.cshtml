@@ -1,28 +1,28 @@
-﻿@* @using NikeStyle.Models; *@
-@{
+﻿@{
     ViewData["Title"] = "Home - NikeStyle";
-    var products = ViewBag.Products as List<NikeStyle.Models.Product>;
-    var banners = ViewBag.Banners as List<NikeStyle.Models.Banner>;
+    var products = ViewBag.Products as List<Product>;
+    var banners = ViewBag.Banners as List<Banner>;
+    var categories = ViewBag.Categories as List<NikeStyle.Models.Category>;
+    var tags = ViewBag.Tags as List<NikeStyle.Models.Tag>;
 }
-<DOCTYPE html>
-    <html lang="en">
-        <head>
-<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css" />
     <style>
-        /* Full-width and full-height hero section */
         body, html {
             margin: 0;
             padding: 0;
-            overflow-x: hidden; /* Prevent horizontal scrolling */
+            overflow-x: hidden;
         }
         
         .full-width-image {
-            width: 100vw; /* Full viewport width */
-            height: 100vh; /* Full viewport height */
-            background-image: url('/images/member-days.jpg'); /* Replace with actual image path */
+            width: 100vw;
+            height: 100vh;
+            background-image: url('/images/member-days.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -35,39 +35,107 @@
         }
 
         .full-width-content {
-            background: rgba(0, 0, 0, 0.6); /* Overlay for text contrast */
+            background: rgba(0, 0, 0, 0.6);
             padding: 20px;
         }
     </style>
-        </head>
-        <body>
-            <section class="hero text-center bg-dark text-white py-5">
-                <div class="container">
-                    <img src="/images/sale-30.jpg" alt="SALE OFF 30%" class="img-fluid">
-                    <h1 class="display-4">SALE OFF 30%</h1>
-                    <p class="lead">Step into unbeatable deals with Nike’s new arrival shoes! </p>
-                </div>
-            </section>
-            <section class="new-arrivals py-5">
-                <div class="container">
-                    <h2 class = "text-center mb-4">New Arrivals</h2>
-                    <div class="row">
-                        @foreach (var banner in banners)
-                        {
-                            <div class="col-md-6 mb-4">
-                                <div class="card banner-card">
-                                    <img src="@banner.ImageUrl" alt="@banner.BannerName" class="card-img-top banner-image">
-                                    <div class="card-img-overlay text-center d-flex flex-column justify-content-end banner-overlay">
-                                        <h5 class="card-title text-white">@banner.BannerName</h5>
-                                        <p class="card-text text-white">@banner.Description</p>
-                                        <a href="/shop" class="btn btn-light">Shop</a>
-                                    </div>
-                                </div>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="#"><img src="/images/logo.jpg" alt="logo" style="height:30px;">NikeStyle</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    
+                    @* Categories *@
+                    @foreach (var category in categories.Where(c => c.ParentCategoryID == null))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="categoryDropdown@category.CategoryID" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @category.Name
+                            </a>
+                            @if (category.SubCategories != null && category.SubCategories.Any())
+                            {
+                                <ul class="dropdown-menu" aria-labelledby="categoryDropdown@category.CategoryID">
+                                    @foreach (var subCategory in category.SubCategories)
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" href="@Url.Action("Index", "Product", new { categoryId = subCategory.CategoryID })">
+                                                @subCategory.Name
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </li>
+                    }
+
+                    <!-- Tags (New and Collection) -->
+                    @foreach (var tag in tags.Where(t => t.ParentTagID == null))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="categoryDropdown@tag.tagID" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @tag.Name
+                            </a>
+                            @if (tag.SubTags!= null && tag.SubTags.Any())
+                            {
+                                <ul class="dropdown-menu" aria-labelledby="tagDropdown@tag.TagID">
+                                    @foreach (var subtag in tag.SubTags)
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" href="@Url.Action("Index", "Product", new { tagId = subtag.TagID })">
+                                                @subtag.Name
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </li>
+                    }
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-dark" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero text-center bg-dark text-white py-5">
+        <div class="container">
+            <img src="/images/sale-30.jpg" alt="SALE OFF 30%" class="img-fluid">
+            <h1 class="display-4">SALE OFF 30%</h1>
+            <p class="lead">Step into unbeatable deals with Nike’s new arrival shoes!</p>
+        </div>
+    </section>
+
+    <section class="new-arrivals py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">New Arrivals</h2>
+            <div class="row">
+                @foreach (var banner in banners)
+                {
+                    <div class="col-md-6 mb-4">
+                        <div class="card banner-card">
+                            <img src="@banner.ImageUrl" alt="@banner.BannerName" class="card-img-top banner-image">
+                            <div class="card-img-overlay text-center d-flex flex-column justify-content-end banner-overlay">
+                                <h5 class="card-title text-white">@banner.BannerName</h5>
+                                <p class="card-text text-white">@banner.Description</p>
+                                <a href="/shop" class="btn btn-light">Shop</a>
                             </div>
-                        }
+                        </div>
                     </div>
-                </div>
-            </section>
-        </body>
-    </html>
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- jQuery and Bootstrap JS for dropdown functionality -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
 </DOCTYPE>

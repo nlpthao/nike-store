@@ -1,0 +1,67 @@
+﻿@model NikeStyle.Models.RegisterViewModel;
+@using NikeStyle.Controllers;
+@{
+    ViewData["Title"] = "Register";
+}
+@{
+    Layout = "_Layout";
+}
+<div class="register-container">
+    <div class="logo">
+        <img src="~/images/logo.jpg" alt="Nike"/>
+    </div>
+    <h2>Now let's make a Nike Member.</h2>
+    <p>We've sent a code to <strong>@Model.Email</strong></p>
+
+    
+    <form method="post" class="register-form">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <input type="text" asp-for="Code" class="form-control" placeholder="Code*" required/>
+            <span asp-validation-for="Code" class="text-danger"></span>
+
+        </div>
+                <div class="form-group">
+            <input type="text" asp-for="FirstName" class="form-control" placeholder="FirstName*" required/>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+
+        </div>
+        <div class="form-group">
+            <input type="text" asp-for="LastName" class="form-control" placeholder="LastName*" required/>
+            <span asp-validation-for="LastName" class="text-danger"></span>
+
+        </div>
+        <div class="form-group">
+            <input type="password" asp-for="Password" class="form-control" placeholder="Password*" required/>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password*" required/>
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+        
+        <div class="form-group">
+            <select asp-for="ShoppingPreference" class="form-control" required>
+                <option value="">Shopping Preference*</option>
+                <option>Men</option>
+                <option>Women</option>
+                <option>Kids</option>
+            </select>
+            <span asp-validation-for="ShoppingPreference" class="text-danger"></span>
+        </div>
+
+        <div class="dob-fields">
+            <input type="number" asp-for="Month" class="dob-field" placeholder="Month*" required/>
+            <input type="number" asp-for="Day" class="dob-field" placeholder="Day*" required/>
+            <input type="number" asp-for="Year" class="dob-field" placeholder="Year*" required/>
+        </div>
+
+        <div class="form-group">
+            <input type="checkbox" asp-for="AgreeToTerms"/>
+            <label asp-for="AgreeToTerms">I agree to Nike's Privacy Policy and Terms of Use</label>
+        </div>
+
+        <button type="submit" class="btn-create-account">Create Account</button>
+    </form>
+</div>
