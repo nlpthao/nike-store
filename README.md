@@ -9,4 +9,4 @@ Welcome to the Nike Store project! This project is designed to showcase a stream
 ![Product Catalog](https://github.com/nlpthao/nike-store/blob/main/Product_page.png)
 - Secure payment system
 ![Register](https://github.com/nlpthao/nike-store/blob/main/Register_page.png)
-![Login](https://github.com/nlpthao/nike-store/blob/main/Login_page.png)
+![Login](https://github.com/nlpthao/nike-store/blob/main/login_page.png)
